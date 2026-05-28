@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Challenge — CATEC 2026-I | UPT</title>
+  <meta name="description" content="Concurso de conocimientos CATEC 2026-I de la Escuela Profesional de Ingeniería de Sistemas de la Universidad Privada de Tacna.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Decorative High-Tech Background -->
+  <div class="bg-layer"></div>
+  <div class="bg-grid"></div>
+
+  <div id="app">
+    
+    <!-- ================= VIEW 1: SETUP ================= -->
+    <main id="view-setup" class="view active">
+      <header class="app-header home-header">
+        <div class="logo-container">
+          <img src="assets/logo_catec.png" alt="CATEC 2026 Logo" class="catec-logo">
+        </div>
+        <h1 class="glow-title">Brain Challenge</h1>
+        <div class="subtitle">CATEC 2026-I &nbsp;·&nbsp; Universidad Privada de Tacna</div>
+      </header>
+      
+      <section class="setup-grid">
+        <!-- Team A Setup -->
+        <article class="team-card glass">
+          <h3>
+            <span class="dot-a"></span>
+            <span class="team-badge-a">Equipo Azul</span>
+          </h3>
+          
+          <label for="teamA-name">// Nombre del Equipo</label>
+          <input type="text" id="teamA-name" placeholder="Los Compiladores" value="Los Compiladores">
+          
+          <label for="a-m1">// Integrante 1 (Titular)</label>
+          <input type="text" id="a-m1" placeholder="Ej. Ana García" value="Ana García">
+          
+          <label for="a-m2">// Integrante 2 (Titular)</label>
+          <input type="text" id="a-m2" placeholder="Ej. Luis Mendoza" value="Luis Mendoza">
+          
+          <label for="a-m3">// Integrante 3 (Titular)</label>
+          <input type="text" id="a-m3" placeholder="Ej. Carlos Pérez" value="Carlos Pérez">
+          
+          <label for="a-m4">// Integrante 4 (Suplente - Opcional)</label>
+          <input type="text" id="a-m4" placeholder="Ej. Mía Torres" value="Mía Torres">
+        </article>
+        
+        <!-- Team B Setup -->
+        <article class="team-card glass">
+          <h3>
+            <span class="dot-b"></span>
+            <span class="team-badge-b">Equipo Rojo</span>
+          </h3>
+          
+          <label for="teamB-name">// Nombre del Equipo</label>
+          <input type="text" id="teamB-name" placeholder="Byte Breakers" value="Byte Breakers">
+          
+          <label for="b-m1">// Integrante 1 (Titular)</label>
+          <input type="text" id="b-m1" placeholder="Ej. Diego Ríos" value="Diego Ríos">
+          
+          <label for="b-m2">// Integrante 2 (Titular)</label>
+          <input type="text" id="b-m2" placeholder="Ej. Valeria Cruz" value="Valeria Cruz">
+          
+          <label for="b-m3">// Integrante 3 (Titular)</label>
+          <input type="text" id="b-m3" placeholder="Ej. Rafael Soto" value="Rafael Soto">
+          
+          <label for="b-m4">// Integrante 4 (Suplente - Opcional)</label>
+          <input type="text" id="b-m4" placeholder="Ej. Sofía Vargas" value="Sofía Vargas">
+        </article>
+      </section>
+      
+      <div class="setup-actions" style="margin-top: 30px;">
+        <button class="btn btn-primary" id="btn-start-setup" onclick="Game.setupEnfrentamiento()">
+          <i data-lucide="target"></i>
+          Iniciar Enfrentamiento
+        </button>
+      </div>
+    </main>
+
+    <!-- ================= VIEW 2: BRACKET ================= -->
+    <main id="view-bracket" class="view">
+      <header class="app-header">
+        <h1>Brain Challenge</h1>
+        <div class="subtitle">Sorteo de Enfrentamiento &nbsp;·&nbsp; CATEC</div>
+      </header>
+      
+      <section class="bracket-container glass">
+        <div class="bracket-round-label" id="bracket-round-label">Sorteando Categoría Ronda 1</div>
+        
+        <div class="bracket-matchup">
+          <article class="bracket-team bracket-team-a glass-sm">
+            <div class="team-logo-wrapper">
+              <i data-lucide="shield" class="logo-placeholder-icon"></i>
+            </div>
+            <h2 class="team-name team-badge-a" id="b-teamA-name">—</h2>
+            <div class="members" id="b-teamA-members"></div>
+          </article>
+          
+          <div class="vs-badge">VS</div>
+          
+          <article class="bracket-team bracket-team-b glass-sm">
+            <div class="team-logo-wrapper">
+              <i data-lucide="cpu" class="logo-placeholder-icon"></i>
+            </div>
+            <h2 class="team-name team-badge-b" id="b-teamB-name">—</h2>
+            <div class="members" id="b-teamB-members"></div>
+          </article>
+        </div>
+        
+        <div style="text-align: center;">
+          <p style="font-size: 0.78rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;">
+            // Categoría Ronda 1
+          </p>
+          <div id="bracket-category" style="font-size: 1.4rem; font-weight: 700; color: var(--accent-purple); margin-bottom: 30px;">
+            —
+          </div>
+          <button class="btn btn-primary" id="btn-start-match" onclick="Game.irAPartida()">
+            <i data-lucide="play"></i>
+            Comenzar Partida
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= VIEW 3: GAME ================= -->
+    <main id="view-game" class="view">
+      <div class="game-layout">
+        <!-- Score Bar Dashboard -->
+        <header class="score-bar glass">
+          <div class="score-team score-team-a">
+            <div class="score-team-name" id="g-nameA">Equipo A</div>
+            <div class="score-value score-value-a" id="g-scoreA">0</div>
+          </div>
+          
+          <div class="score-center">
+            <div class="round-label">// Ronda</div>
+            <div class="round-value" id="g-round">1</div>
+            <div class="question-count" id="g-qcount">P 1/11</div>
+          </div>
+          
+          <div class="score-team score-team-b">
+            <div class="score-team-name" id="g-nameB">Equipo B</div>
+            <div class="score-value score-value-b" id="g-scoreB">0</div>
+          </div>
+        </header>
+
+        <!-- Status & Timer Row -->
+        <section class="status-row glass">
+          <div class="category-badge">
+            <span id="g-catIcon" style="display: inline-flex; align-items: center;">
+              <i data-lucide="gamepad-2"></i>
+            </span>
+            <span id="g-category">Videojuegos</span>
+          </div>
+          
+          <div id="g-turn" class="turn-indicator turn-a">
+            <span class="turn-dot"></span>
+            <span id="g-turn-text">Equipo A</span>
+          </div>
+          
+          <div class="timer-wrap">
+            <svg class="timer-arc" viewBox="0 0 52 52" aria-hidden="true">
+              <circle class="bg-circle" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+              <circle class="fg-circle" id="timerArc" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="timer-display timer-normal" id="timer-display">30</div>
+          </div>
+        </section>
+
+        <!-- Progress Indicator -->
+        <div class="progress-bar" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-fill" id="round-progress" style="width: 9%"></div>
+        </div>
+
+        <!-- Main Game Grid: Side-by-side layout on larger screens -->
+        <div class="game-main-grid">
+          <!-- Question Area -->
+          <section class="question-area glass">
+            <h2 class="question-text" id="g-question">Esperando pregunta...</h2>
+            <div style="position: relative; width: 100%;">
+              <div class="options-grid" id="g-options">
+                <!-- Dynamically populated options -->
+              </div>
+              
+              <!-- Countdown Overlay -->
+              <div id="countdown-overlay" class="countdown-overlay hidden">
+                <div class="countdown-number" id="countdown-number">3</div>
+                <div class="countdown-text">// ¡PREPÁRENSE PARA PULSAR!</div>
+              </div>
+            </div>
+            
+            <!-- Manual pacing next question button -->
+            <div class="next-question-container hidden" id="next-question-container">
+              <button class="btn-next" id="btn-next-question" onclick="Game.avanzarManual()">
+                <span>Siguiente Pregunta</span>
+                <i data-lucide="arrow-right" class="inline-icon"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- Wildcards Operations Deck -->
+          <section class="wildcard-section glass">
+            <div class="mod-label" style="margin-bottom: 12px">
+              <i data-lucide="layers"></i>
+              // Comodines — <span id="wc-total-label" style="color: var(--accent-gold)">3 usos disponibles</span>
+            </div>
+            
+            <div id="wc-team-tabs" style="display: flex; gap: 8px; margin-bottom: 15px;">
+              <button class="btn btn-ghost btn-sm active" id="wc-tab-a" onclick="Game.setWcTeam('A')">
+                Equipo Azul
+              </button>
+              <button class="btn btn-ghost btn-sm" id="wc-tab-b" onclick="Game.setWcTeam('B')">
+                Equipo Rojo
+              </button>
+            </div>
+            
+            <div class="wc-grid" id="wc-grid">
+              <!-- Dynamically populated wildcards -->
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= VIEW 4: DEATHMATCH ================= -->
+    <main id="view-deathmatch" class="view">
+      <header class="app-header">
+        <h1>Muerte Súbita</h1>
+        <div class="subtitle">DeathMatch de desempate &nbsp;·&nbsp; 1 vs 1</div>
+      </header>
+      
+      <section class="dm-arena glass">
+        <h2 class="dm-title">⚡ Desempate Decisivo ⚡</h2>
+        
+        <div class="dm-vs-row">
+          <article class="dm-player dm-player-a glass-sm">
+            <div class="dm-player-name" id="dm-player-a" style="color: var(--team-a);">—</div>
+            <div class="dm-player-team" id="dm-team-a">Equipo Azul</div>
+          </article>
+          
+          <div class="vs-badge">VS</div>
+          
+          <article class="dm-player dm-player-b glass-sm">
+            <div class="dm-player-name" id="dm-player-b" style="color: var(--team-b);">—</div>
+            <div class="dm-player-team" id="dm-team-b">Equipo Rojo</div>
+          </article>
+        </div>
+        
+        <div id="dm-status" style="margin-bottom: 20px; font-size: 0.8rem; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">
+          Presione su Pulsador para Responder
+        </div>
+        
+        <p class="dm-question" id="dm-question">
+          El moderador leerá la pregunta en voz alta. El primero en activar su buzzer tendrá la palabra.
+        </p>
+        
+        <div class="dm-buzzer-row">
+          <button class="buzzer buzzer-a" id="buzzer-a" onclick="Game.dmBuzzer('A')">
+            <span>AZUL</span>
+            <span class="key-hint" aria-hidden="true">Tecla Q</span>
+          </button>
+          <button class="buzzer buzzer-b" id="buzzer-b" onclick="Game.dmBuzzer('B')">
+            <span>ROJO</span>
+            <span class="key-hint" aria-hidden="true">Tecla P</span>
+          </button>
+        </div>
+        
+        <div id="dm-timer-wrap" class="timer-wrap" style="justify-content: center; margin: 20px 0;">
+          <div class="timer-display timer-normal" id="dm-timer">—</div>
+        </div>
+        
+      </section>
+    </main>
+
+    <!-- ================= VIEW 5: RESULTS ================= -->
+    <main id="view-result" class="view">
+      <section class="result-card glass">
+        <div class="trophy" aria-hidden="true">
+          <i data-lucide="trophy"></i>
+        </div>
+        <h1 class="winner-name" id="r-winner">—</h1>
+        <div class="result-label">Ganadores del Enfrentamiento</div>
+        
+        <div class="final-scores" id="r-scores">
+          <!-- Final scores rendered dynamically -->
+        </div>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="res-btn-retry" onclick="Game.reiniciar()">
+            <i data-lucide="rotate-ccw"></i>
+            Nuevo Enfrentamiento
+          </button>
+          <button class="btn btn-ghost" id="res-btn-home" onclick="Game.irSetup()">
+            <i data-lucide="home"></i>
+            Menú de Inicio
+          </button>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ================= MODALS OVERLAYS ================= -->
+
+  <!-- Split VS Buzzer Awaiting Screen -->
+  <div id="buzzer-awaiting-overlay" class="buzzer-overlay hidden">
+    <!-- Top header area -->
+    <div class="buzzer-header">
+      <div class="buzzer-icon-wrap">
+        <i data-lucide="bell" class="pulsing-bell"></i>
+      </div>
+      <h2 class="buzzer-overlay-title">// PULSADORES ACTIVOS</h2>
+      <p class="buzzer-overlay-desc">Esperando a que los equipos presionen sus timbres presenciales...</p>
+    </div>
+    
+    <!-- Split versus grid -->
+    <div class="buzzer-split-container">
+      <!-- Team A Left Side -->
+      <div class="buzzer-team-side side-a" onclick="Game.reclamarTurno('A')">
+        <div class="buzzer-team-glow-bg"></div>
+        <div class="side-content">
+          <div class="buzzer-team-label">// EQUIPO AZUL</div>
+          <h3 class="buzzer-team-name" id="buzzer-val-name-a">Equipo A</h3>
+          <div class="buzzer-members-list" id="buzzer-members-a">
+            <!-- Dynamically populated -->
+          </div>
+          <button class="buzzer-trigger-btn btn-team-a-trigger">
+            <span class="buzzer-key-badge">Q</span>
+            <span>Registrar Timbre</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Versus Badge Middle -->
+      <div class="buzzer-vs-divider">
+        <div class="buzzer-vs-circle">VS</div>
+      </div>
+      
+      <!-- Team B Right Side -->
+      <div class="buzzer-team-side side-b" onclick="Game.reclamarTurno('B')">
+        <div class="buzzer-team-glow-bg"></div>
+        <div class="side-content">
+          <div class="buzzer-team-label">// EQUIPO ROJO</div>
+          <h3 class="buzzer-team-name" id="buzzer-val-name-b">Equipo B</h3>
+          <div class="buzzer-members-list" id="buzzer-members-b">
+            <!-- Dynamically populated -->
+          </div>
+          <button class="buzzer-trigger-btn btn-team-b-trigger">
+            <span class="buzzer-key-badge">P</span>
+            <span>Registrar Timbre</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Skip button at the very bottom -->
+    <div class="buzzer-footer">
+      <button class="btn btn-ghost btn-sm" onclick="Game.saltarPregunta()">
+        <i data-lucide="arrow-right"></i> Omitir Pregunta
+      </button>
+    </div>
+  </div>
+
+  <!-- Category Selector Modal -->
+  <div class="modal-overlay" id="modal-category">
+    <div class="modal-box">
+      <div class="modal-icon" aria-hidden="true">
+        <i data-lucide="target" style="color: var(--accent-purple);"></i>
+      </div>
+      <h2 class="modal-title" id="modal-cat-title">Elige la Categoría</h2>
+      <p class="modal-desc" id="modal-cat-desc">
+        Selecciona la temática sobre la cual se plantearán las preguntas de esta ronda.
+      </p>
+      
+      <div class="cat-picker" id="cat-picker">
+        <!-- Rendered dynamically -->
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-confirm-cat" onclick="Game.confirmarCategoria()">
+          Confirmar Temática
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Duelo Directo Setup Modal -->
+  <div class="modal-overlay" id="modal-duel">
+    <div class="modal-box" style="max-width: 580px;">
+      <div class="modal-icon" aria-hidden="true">
+        <i data-lucide="swords" style="color: var(--danger);"></i>
+      </div>
+      <h2 class="modal-title">Configuración de Duelo</h2>
+      <p class="modal-desc">
+        Elige un integrante titular de cada equipo que se enfrentarán cara a cara.
+      </p>
+      
+      <div class="duel-lists-wrap">
+        <div>
+          <label style="margin-bottom: 10px; color: var(--accent-cyan)">Equipo Azul</label>
+          <div class="duel-team-column" id="duel-teamA-list">
+            <!-- Team A members -->
+          </div>
+        </div>
+        
+        <div>
+          <label style="margin-bottom: 10px; color: var(--team-b)">Equipo Rojo</label>
+          <div class="duel-team-column" id="duel-teamB-list">
+            <!-- Team B members -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-confirm-duel" onclick="Game.confirmarDuelo()">
+          Pactar Duelo
+        </button>
+        <button class="btn btn-ghost" onclick="UI.closeModal('modal-duel')">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wildcard Trigger Confirmation Modal -->
+  <div class="modal-overlay" id="modal-wildcard">
+    <div class="modal-box">
+      <div class="modal-icon" id="wc-modal-icon" aria-hidden="true">
+        <i data-lucide="layers"></i>
+      </div>
+      <h2 class="modal-title" id="wc-modal-title">Comodín Activado</h2>
+      <p class="modal-desc" id="wc-modal-desc"></p>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="UI.closeModal('modal-wildcard')">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Round Completion Recap Modal -->
+  <div class="modal-overlay" id="modal-round">
+    <div class="modal-box">
+      <div class="modal-icon" aria-hidden="true">
+        <i data-lucide="award" style="color: var(--accent-gold);"></i>
+      </div>
+      <h2 class="modal-title" id="round-modal-title">Fin de Ronda</h2>
+      <p class="modal-desc" id="round-modal-desc"></p>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="round-modal-btn" onclick="Game.continuarTrasRonda()">
+          Continuar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generic Alert Modal -->
+  <div class="modal-overlay" id="modal-alert">
+    <div class="modal-box">
+      <div class="modal-icon" id="alert-icon" aria-hidden="true">
+        <i data-lucide="alert-triangle" style="color: var(--warn);"></i>
+      </div>
+      <h2 class="modal-title" id="alert-title">Notificación</h2>
+      <p class="modal-desc" id="alert-desc"></p>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="UI.closeModal('modal-alert')">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Roulette Modal -->
+  <div class="modal-overlay" id="modal-roulette">
+    <div class="modal-box" style="max-width: 580px; text-align: center;">
+      <div class="modal-icon" aria-hidden="true">
+        <i data-lucide="rotate-cw" style="color: var(--accent-cyan);"></i>
+      </div>
+      <h2 class="modal-title">Ruleta de Categorías</h2>
+      <p class="modal-desc">
+        Gira la ruleta para seleccionar la categoría de esta ronda de forma aleatoria.
+      </p>
+      
+      <div class="roulette-container">
+        <div class="roulette-pointer"></div>
+        <canvas id="roulette-canvas" width="440" height="440"></canvas>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-spin-roulette" onclick="UI.triggerRouletteSpin()">
+          Girar Ruleta
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsible Moderator Panel -->
+  <section class="moderator-panel glass">
+    <div class="mod-label">
+      <i data-lucide="sliders"></i>
+      Panel del Moderador
+    </div>
+    
+    <div class="mod-controls">
+      <!-- Game Mode Controls -->
+      <div id="mod-controls-game" class="mod-section">
+        <button class="btn btn-ghost btn-sm" id="mod-btn-buzz-a" onclick="Game.reclamarTurno('A')" style="border-color: rgba(138, 235, 255, 0.4); color: var(--accent-cyan);" title="Simular pulsación de Equipo Azul (Q)">
+          <i data-lucide="bell" style="width: 14px; height: 14px;"></i>
+          Pulsar A
+        </button>
+        <button class="btn btn-ghost btn-sm" id="mod-btn-buzz-b" onclick="Game.reclamarTurno('B')" style="border-color: rgba(255, 123, 151, 0.4); color: var(--team-b);" title="Simular pulsación de Equipo Rojo (P)">
+          <i data-lucide="bell" style="width: 14px; height: 14px;"></i>
+          Pulsar B
+        </button>
+        
+        <div class="mod-divider"></div>
+
+        <button class="btn btn-success btn-sm" id="mod-btn-correct" onclick="Game.registrarRespuesta(true)">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          Correcta
+        </button>
+        <button class="btn btn-danger btn-sm" id="mod-btn-incorrect" onclick="Game.registrarRespuesta(false)">
+          <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+          Incorrecta
+        </button>
+        <button class="btn btn-ghost btn-sm" id="mod-btn-time" onclick="Game.tiempoAgotado()">
+          <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+          Tiempo
+        </button>
+        
+        <div class="mod-divider"></div>
+        
+        <button class="btn btn-ghost btn-sm" id="mod-btn-pass" onclick="Game.saltarPregunta()">
+          <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          Omitir
+        </button>
+        <button class="btn btn-ghost btn-sm" id="mod-btn-finish" onclick="Game.finalizarRonda()">
+          <i data-lucide="chevrons-right" style="width: 14px; height: 14px;"></i>
+          Fin Ronda
+        </button>
+      </div>
+
+      <!-- Deathmatch Mode Controls -->
+      <div id="mod-controls-dm" class="mod-section hidden">
+        <button class="btn btn-success btn-sm" id="dm-btn-correct-dm" onclick="Game.dmRespuesta(true)">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          Respuesta Correcta
+        </button>
+        <button class="btn btn-danger btn-sm" id="dm-btn-incorrect-dm" onclick="Game.dmRespuesta(false)">
+          <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+          Respuesta Incorrecta
+        </button>
+        
+        <div class="mod-divider"></div>
+        
+        <button class="btn btn-ghost btn-sm" id="dm-btn-next-dm" onclick="Game.dmSiguiente()">
+          <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          Siguiente DM
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Admin Toggle Button -->
+  <button class="admin-toggle-btn hidden" onclick="UI.toggleModeratorPanel()">
+    <i data-lucide="sliders"></i>
+  </button>
+
+  <!-- Toast Notification Overlay -->
+  <div id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="js/db.js"></script>
+  <script src="js/background.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    // Initialize interactive background, icons, and views on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      BackgroundTech.init();
+      UI.renderIcons();
+    });
+  </script>
+</body>
+</html>
